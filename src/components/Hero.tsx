@@ -1,3 +1,4 @@
+"use client"
 import Image from 'next/image'
 
 import { Button } from '@/components/Button'
@@ -9,10 +10,12 @@ import logoStaticKit from '@/images/logos/statickit.svg'
 import logoTransistor from '@/images/logos/transistor.svg'
 import logoTuple from '@/images/logos/tuple.svg'
 
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+
 export function Hero() {
   return (
-    <Container className="pb-16 pt-20 text-center lg:pt-32">
-      <h1 className="mx-auto max-w-4xl font-display text-5xl font-medium tracking-tight text-slate-900 sm:text-7xl">
+    <Container className="pb-16 pt-20 text-center lg:pt-32 relative">
+      <h1 className="mx-auto max-w-4xl font-display text-5xl font-medium tracking-tight text-slate-900 sm:text-7xl relative z-2">
         Sample{' '}
         <span className="relative whitespace-nowrap text-blue-600">
           <svg
@@ -26,11 +29,29 @@ export function Hero() {
           <span className="relative">LottieFiles</span>
         </span>
       </h1>
-      <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
+      <DotLottieReact src="/lottieFiles/anim-3.lottie"
+        loop
+        autoplay
+        speed={0.8}
+        className='absolute w-[300px] h-[300px] right-[100px] top-0'
+      />
+      <DotLottieReact src="/lottieFiles/anim-3.lottie"
+        loop
+        autoplay
+        speed={1}
+        className='absolute w-[300px] h-[300px] left-[100px] top-0 '
+      />
+      <DotLottieReact src="/lottieFiles/anim-1.lottie"
+        loop
+        autoplay
+        speed={0.8}
+        className='w-1/2 mx-auto'
+      />
+      <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700 relative z-2">
         Most bookkeeping software is accurate, but hard to use. We make the
         opposite trade-off, and hope you don’t get audited.
       </p>
-      <div className="mt-10 flex justify-center gap-x-6">
+      <div className="mt-10 flex justify-center gap-x-6 relative z-2">
         <Button href="/register">Get 6 months free</Button>
         <Button
           href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
