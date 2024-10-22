@@ -21,7 +21,7 @@ export function TextField({
   className,
   ...props
 }: Omit<React.ComponentPropsWithoutRef<'input'>, 'id'> & { label: string }) {
-  let id = useId()
+  const id = useId()
 
   return (
     <div className={className}>
@@ -36,7 +36,7 @@ export function SelectField({
   className,
   ...props
 }: Omit<React.ComponentPropsWithoutRef<'select'>, 'id'> & { label: string }) {
-  let id = useId()
+  const id = useId()
 
   return (
     <div className={className}>
