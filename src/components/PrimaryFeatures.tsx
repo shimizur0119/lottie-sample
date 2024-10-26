@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Image from 'next/image'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
@@ -11,6 +11,10 @@ import screenshotExpenses from '@/images/screenshots/expenses.png'
 import screenshotPayroll from '@/images/screenshots/payroll.png'
 import screenshotReporting from '@/images/screenshots/reporting.png'
 import screenshotVatReturns from '@/images/screenshots/vat-returns.png'
+
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { create } from '@lottiefiles/lottie-interactivity';
+import { useScroll } from 'react-use';
 
 const features = [
   {
@@ -44,6 +48,38 @@ export function PrimaryFeatures() {
     'horizontal',
   )
 
+  const scrollRef = useRef(null);
+  const { x, y } = useScroll(scrollRef);
+  const flameCount = 80
+  const [dotLottie, setDotLottie] = useState<any>(null);
+
+  const dotLottieRefCallback = (_dotLottie) => {
+    setDotLottie(_dotLottie);
+  };
+
+  const [scrollY, setScrollY] = useState(0);
+
+  const handleScroll = () => {
+    setScrollY(window.scrollY);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (dotLottie) {
+      const flameNumber = Math.floor(scrollY / 10) % flameCount;
+      dotLottie.setFrame(flameNumber)
+    }
+
+  }, [scrollY]);
+
+
+
   useEffect(() => {
     const lgMediaQuery = window.matchMedia('(min-width: 1024px)')
 
@@ -64,6 +100,7 @@ export function PrimaryFeatures() {
       id="features"
       aria-label="Features for running your books"
       className="relative overflow-hidden bg-blue-600 pb-28 pt-20 sm:py-32"
+      ref={scrollRef}
     >
       <Image
         className="absolute left-1/2 top-1/2 max-w-none translate-x-[-44%] translate-y-[-42%]"
@@ -74,6 +111,14 @@ export function PrimaryFeatures() {
         unoptimized
       />
       <Container className="relative">
+        <DotLottieReact
+          id='lottie-dog-1'
+          src="/lottieFiles/dog-2.lottie"
+          loop
+          speed={0.5}
+          className='absolute w-[300px] h-[300px] left-[100px] top-0'
+          dotLottieRefCallback={dotLottieRefCallback}
+        />
         <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
           <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
             Everything you need to run your books.

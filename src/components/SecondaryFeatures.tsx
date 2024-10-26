@@ -1,6 +1,6 @@
 'use client'
 
-import { useId } from 'react'
+import { useRef, useEffect, useId, useState } from 'react'
 import Image, { type ImageProps } from 'next/image'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
@@ -10,12 +10,17 @@ import screenshotContacts from '@/images/screenshots/contacts.png'
 import screenshotInventory from '@/images/screenshots/inventory.png'
 import screenshotProfitLoss from '@/images/screenshots/profit-loss.png'
 
+
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { useHover, useHoverDirty } from "react-use";
+
 interface Feature {
   name: React.ReactNode
   summary: string
   description: string
   image: ImageProps['src']
   icon: React.ComponentType
+  lotte?: string
 }
 
 const features: Array<Feature> = [
@@ -115,21 +120,41 @@ function Feature({
   feature: Feature
   isActive: boolean
 }) {
+  const ref = useRef(null);
+  const hovering = useHoverDirty(ref);
+  const [dotLottie, setDotLottie] = useState<any>(null);
+
+  const dotLottieRefCallback = (_dotLottie) => {
+    setDotLottie(_dotLottie);
+  };
+
+  useEffect(() => {
+    if (dotLottie) {
+      if (hovering) {
+        dotLottie.play();
+      } else {
+        dotLottie.stop();
+      }
+    }
+
+  }, [hovering]);
+
+
+
   return (
     <div
-      className={clsx(className, !isActive && 'opacity-75 hover:opacity-100')}
+      className={clsx(className, !isActive && 'opacity-75 hover:opacity-100', 'group')}
       {...props}
+      ref={ref}
     >
-      <div
-        className={clsx(
-          'w-9 rounded-lg',
-          isActive ? 'bg-blue-600' : 'bg-slate-500',
-        )}
-      >
-        <svg aria-hidden="true" className="h-9 w-9" fill="none">
-          <feature.icon />
-        </svg>
-      </div>
+      {feature.lotte && (
+        <DotLottieReact
+          src={feature.lotte}
+          speed={3}
+          className='w-[50px] h-[50px] group-hover:scale-[1.2] transition'
+          dotLottieRefCallback={dotLottieRefCallback}
+        />
+      )}
       <h3
         className={clsx(
           'mt-6 text-sm font-medium',
@@ -170,27 +195,42 @@ function FeaturesMobile() {
 }
 
 function FeaturesDesktop() {
+  const lottieIconReport = '/lottieFiles/report.lottie';
+  const lottieIconList = '/lottieFiles/list.lottie';
+  const lottieIconAccount = '/lottieFiles/account.lottie';
+
   return (
     <TabGroup className="hidden lg:mt-20 lg:block">
       {({ selectedIndex }) => (
         <>
           <TabList className="grid grid-cols-3 gap-x-8">
-            {features.map((feature, featureIndex) => (
-              <Feature
-                key={feature.summary}
-                feature={{
-                  ...feature,
-                  name: (
-                    <Tab className="ui-not-focus-visible:outline-none">
-                      <span className="absolute inset-0" />
-                      {feature.name}
-                    </Tab>
-                  ),
-                }}
-                isActive={featureIndex === selectedIndex}
-                className="relative"
-              />
-            ))}
+            {features.map((feature, featureIndex) => {
+              let lottieFilePath;
+              if (featureIndex === 0) {
+                lottieFilePath = lottieIconReport;
+              } else if (featureIndex === 1) {
+                lottieFilePath = lottieIconList;
+              } else if (featureIndex === 2) {
+                lottieFilePath = lottieIconAccount;
+              }
+              return (
+                <Feature
+                  key={feature.summary}
+                  feature={{
+                    ...feature,
+                    lotte: lottieFilePath,
+                    name: (
+                      <Tab className="ui-not-focus-visible:outline-none">
+                        <span className="absolute inset-0" />
+                        {feature.name}
+                      </Tab>
+                    ),
+                  }}
+                  isActive={featureIndex === selectedIndex}
+                  className="relative"
+                />
+              )
+            })}
           </TabList>
           <TabPanels className="relative mt-20 overflow-hidden rounded-4xl bg-slate-200 px-14 py-16 xl:px-16">
             <div className="-mx-5 flex">
