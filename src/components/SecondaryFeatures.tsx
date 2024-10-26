@@ -12,7 +12,7 @@ import screenshotProfitLoss from '@/images/screenshots/profit-loss.png'
 
 
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { useHover, useHoverDirty } from "react-use";
+import { useHoverDirty } from "react-use";
 
 interface Feature {
   name: React.ReactNode
@@ -124,7 +124,7 @@ function Feature({
   const hovering = useHoverDirty(ref);
   const [dotLottie, setDotLottie] = useState<any>(null);
 
-  const dotLottieRefCallback = (_dotLottie) => {
+  const dotLottieRefCallback = (_dotLottie: any) => {
     setDotLottie(_dotLottie);
   };
 

@@ -13,8 +13,6 @@ import screenshotReporting from '@/images/screenshots/reporting.png'
 import screenshotVatReturns from '@/images/screenshots/vat-returns.png'
 
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { create } from '@lottiefiles/lottie-interactivity';
-import { useScroll } from 'react-use';
 
 const features = [
   {
@@ -49,11 +47,10 @@ export function PrimaryFeatures() {
   )
 
   const scrollRef = useRef(null);
-  const { x, y } = useScroll(scrollRef);
   const flameCount = 80
   const [dotLottie, setDotLottie] = useState<any>(null);
 
-  const dotLottieRefCallback = (_dotLottie) => {
+  const dotLottieRefCallback = (_dotLottie: any) => {
     setDotLottie(_dotLottie);
   };
 
